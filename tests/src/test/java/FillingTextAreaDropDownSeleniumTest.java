@@ -9,11 +9,23 @@ import java.net.URL;
 import java.util.List;
 import java.net.MalformedURLException;
 
+/**
+ * Testing filling text area and drop down on https://demowebshop.tricentis.com/ website.
+ */
 public class FillingTextAreaDropDownSeleniumTest {
 
     private WebDriver driver;
     private WebDriverWait wait;
 
+    /**
+     * Sets up the test environment by creating a new driver instance
+     * and maximising the window. The driver is then stored in the
+     * {@link #driver} field and a {@link WebDriverWait} is created
+     * to wait up to 10 seconds for elements to be visible.
+     * 
+     * @throws MalformedURLException if the URL passed to the
+     *         {@link RemoteWebDriver} constructor is not a valid URL.
+     */
     @Before
     public void setup() throws MalformedURLException {
         ChromeOptions options = new ChromeOptions();
@@ -23,17 +35,16 @@ public class FillingTextAreaDropDownSeleniumTest {
         wait = new WebDriverWait(driver, 10);
     }
 
-    private final By bodyLocator = By.tagName("body");
-    private final By searchTogglerLocator = By.className("search-bar-toggler");
-    private final By searchLocator = By.xpath("//div[@class='sliding-search-wrapper']/form/input[@name='search']");
-
-
-
     private WebElement waitVisibiltyAndFindElement(By locator) {
         this.wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
         return this.driver.findElement(locator);
     }
 
+    /**
+     * Testing filling and submitting a newsletter subscription form.
+     * Verifies that the newsletter subscription is successful and an
+     * appropriate message is displayed.
+     */
     @Test
     public void testFillingTextArea() {
         driver.get("https://demowebshop.tricentis.com/");
@@ -53,6 +64,9 @@ public class FillingTextAreaDropDownSeleniumTest {
         Assert.assertTrue("Subscribe went wrong.", resultText.contains("Thank you") || resultText.contains("already subscribed"));
     }
 
+    /**
+     * Testing selecting an option from a drop down.
+     */
     @Test
     public void testSelectFromDropDown() {
         driver.get("https://demowebshop.tricentis.com/desktops");
@@ -70,6 +84,9 @@ public class FillingTextAreaDropDownSeleniumTest {
         Assert.assertEquals("Price: Low to High", selectedOption);
     }
 
+    /**
+     * Closes the browser after each test.
+     */
     @After
     public void close() {
         if (driver != null) {

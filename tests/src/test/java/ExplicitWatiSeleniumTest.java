@@ -8,11 +8,23 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 import java.net.URL;
 import java.net.MalformedURLException;
 
+/**
+ * Testing explicit wait on https://demowebshop.tricentis.com/ website.
+ */
 public class ExplicitWatiSeleniumTest {
 
     private WebDriver driver;
     private WebDriverWait wait;
-
+    
+    /**
+     * Sets up the test environment by creating a new driver instance
+     * and maximising the window. The driver is then stored in the
+     * {@link #driver} field and a {@link WebDriverWait} is created
+     * to wait up to 10 seconds for elements to be visible.
+     * 
+     * @throws MalformedURLException if the URL passed to the
+     *         {@link RemoteWebDriver} constructor is not a valid URL.
+     */
     @Before
     public void setup() throws MalformedURLException {
         ChromeOptions options = new ChromeOptions();
@@ -22,15 +34,13 @@ public class ExplicitWatiSeleniumTest {
         wait = new WebDriverWait(driver, 10);
     }
 
-    private final By bodyLocator = By.tagName("body");
-    private final By searchTogglerLocator = By.className("search-bar-toggler");
-    private final By searchLocator = By.xpath("//div[@class='sliding-search-wrapper']/form/input[@name='search']");
-
-    private WebElement waitVisibiltyAndFindElement(By locator) {
-        this.wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
-        return this.driver.findElement(locator);
-    }
-
+    /**
+     * Tests searching for a product with an explicit wait.
+     * This test opens the website, waits for the search box to be visible,
+     * enters a search term, submits the form and waits for the search results
+     * to become visible. The test then verifies that some results were found
+     * by checking the length of the page text.
+     */
     @Test
     public void testSearchWithExplicitWait() {
         driver.get("https://demowebshop.tricentis.com/");
@@ -49,7 +59,9 @@ public class ExplicitWatiSeleniumTest {
         Assert.assertTrue("No results found.", pageText.length() > 10);
     }
 
-
+    /**
+     * Closes the browser after each test.
+     */
     @After
     public void close() {
         if (driver != null) {

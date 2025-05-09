@@ -8,11 +8,23 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 import java.net.URL;
 import java.net.MalformedURLException;
 
+/**
+ * Testing complex xpath handling on https://demowebshop.tricentis.com/ website.
+ */
 public class ComplexXPathSeleniumTest {
 
     private WebDriver driver;
     private WebDriverWait wait;
 
+    /**
+     * Sets up the test environment by creating a new driver instance
+     * and maximising the window. The driver is then stored in the
+     * {@link #driver} field and a {@link WebDriverWait} is created
+     * to wait up to 10 seconds for elements to be visible.
+     * 
+     * @throws MalformedURLException if the URL passed to the
+     *         {@link RemoteWebDriver} constructor is not a valid URL.
+     */
     @Before
     public void setup() throws MalformedURLException {
         ChromeOptions options = new ChromeOptions();
@@ -22,17 +34,14 @@ public class ComplexXPathSeleniumTest {
         wait = new WebDriverWait(driver, 10);
     }
 
-    private final By bodyLocator = By.tagName("body");
-    private final By searchTogglerLocator = By.className("search-bar-toggler");
-    private final By searchLocator = By.xpath("//div[@class='sliding-search-wrapper']/form/input[@name='search']");
-
-
-
     private WebElement waitVisibiltyAndFindElement(By locator) {
         this.wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
         return this.driver.findElement(locator);
     }
 
+    /**
+     * Testing complex xpath clicking on 'Register' link 
+     */
     @Test
     public void testComplexXPathClick() {
         this.driver.get("https://demowebshop.tricentis.com/");
@@ -48,6 +57,9 @@ public class ComplexXPathSeleniumTest {
         Assert.assertEquals("Register", heading.getText());
     }
 
+    /**
+     * Closes the browser after each test.
+     */
     @After
     public void close() {
         if (driver != null) {

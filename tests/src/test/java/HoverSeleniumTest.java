@@ -10,11 +10,23 @@ import org.openqa.selenium.interactions.Actions;
 import java.net.URL;
 import java.net.MalformedURLException;
 
+/**
+ * Testing hovering over an element on https://demowebshop.tricentis.com/ website.
+ */
 public class HoverSeleniumTest {
 
     private WebDriver driver;
     private WebDriverWait wait;
 
+    /**
+     * Sets up the test environment by creating a new driver instance
+     * and maximising the window. The driver is then stored in the
+     * {@link #driver} field and a {@link WebDriverWait} is created
+     * to wait up to 10 seconds for elements to be visible.
+     * 
+     * @throws MalformedURLException if the URL passed to the
+     *         {@link RemoteWebDriver} constructor is not a valid URL.
+     */
     @Before
     public void setup() throws MalformedURLException {
         ChromeOptions options = new ChromeOptions();
@@ -24,15 +36,15 @@ public class HoverSeleniumTest {
         wait = new WebDriverWait(driver, 10);
     }
 
-    private final By bodyLocator = By.tagName("body");
-    private final By searchTogglerLocator = By.className("search-bar-toggler");
-    private final By searchLocator = By.xpath("//div[@class='sliding-search-wrapper']/form/input[@name='search']");
-
     private WebElement waitVisibiltyAndFindElement(By locator) {
         this.wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
         return this.driver.findElement(locator);
     }
 
+    /**
+     * Tests hovering over an image container on the "Build your own computer" page.
+     * Verifies that the "Desktops" subcategory link becomes visible upon hovering.
+     */
     @Test
     public void testHover() {
         this.driver.get("https://demowebshop.tricentis.com/build-your-own-computer");
@@ -48,6 +60,9 @@ public class HoverSeleniumTest {
         Assert.assertTrue("Menu is not displayed", subMenu.isDisplayed());
     }
 
+    /**
+     * Closes the browser after each test.
+     */
     @After
     public void close() {
         if (driver != null) {
